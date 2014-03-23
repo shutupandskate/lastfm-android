@@ -1,0 +1,14 @@
+*.[oa]
+*~
+*.class
+*.apk
+*.ap_
+.idea/
+*.iml
+gen/
+assets/
+project.properties
+proguard-project.txt
+local.properties
+ant.properties
+build
