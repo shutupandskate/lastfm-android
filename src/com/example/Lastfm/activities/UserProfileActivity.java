@@ -1,9 +1,11 @@
-package com.example.Lastfm;
+package com.example.Lastfm.activities;
 
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import com.example.Lastfm.R;
+import com.example.Lastfm.helpers.CalendarHelper;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -12,6 +14,9 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.security.Timestamp;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -74,10 +79,19 @@ public class UserProfileActivity extends Activity {
                     Map<String, String> m = new HashMap<String, String>();
                     track = (JSONObject) tracks.get(i);
 
+                    if(track.has("date")) {
+                        String uts = (String) ((JSONObject) track.get("date")).get("uts");
+                        m.put("trackTime", CalendarHelper.prettifyTrackDate(Long.parseLong(uts)));
+                    } else if(track.has("@attr") && ((JSONObject)track.get("@attr")).has("nowplaying")
+                         && ((JSONObject)track.get("@attr")).get("nowplaying").toString().equals("true") ) {
+                        m.put("trackTime", "Now");
+                    } else {
+                        m.put("trackTime", "In future"); // happens when user has timezone problems
+                    }
                     m.put("trackName", (String) track.get("name"));
-                    m.put("trackTime", (String) ((JSONObject) track.get("date")).get("uts"));
                     m.put("trackArtistName", (String) ((JSONObject) track.get("artist")).get("#text"));
-                    m.put("albumImageUrl", (String) ((JSONObject)(((JSONArray) track.get("image"))).get(1)).get("#text"));
+                    m.put("albumImageUrl", (String) ((JSONObject)(((JSONArray) track.get("image")))
+                            .get(1)).get("#text")); // "1" stands for img of medium size
 
                     recentTracks[i] = m;
                 }
@@ -92,7 +106,9 @@ public class UserProfileActivity extends Activity {
             super.onPostExecute(data);
 
             for(Integer i=0; i<data.length; i++){
-                Log.d("mylog", data[i].get("trackArtistName").toString());
+                Log.d("mylog", i.toString());
+                Log.d("mylog", data[i].get("trackName").toString());
+                Log.d("mylog", data[i].get("trackTime").toString());
             }
 
         }
