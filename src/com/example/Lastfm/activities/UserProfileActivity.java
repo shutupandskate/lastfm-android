@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ListView;
 import com.example.Lastfm.R;
 import com.example.Lastfm.helpers.CalendarHelper;
+import com.example.Lastfm.lists.RecentTracksListAdapter;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -95,6 +97,7 @@ public class UserProfileActivity extends Activity {
 
                     recentTracks[i] = m;
                 }
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -105,11 +108,17 @@ public class UserProfileActivity extends Activity {
         protected void onPostExecute(Map[] data) {
             super.onPostExecute(data);
 
-            for(Integer i=0; i<data.length; i++){
-                Log.d("mylog", i.toString());
-                Log.d("mylog", data[i].get("trackName").toString());
-                Log.d("mylog", data[i].get("trackTime").toString());
-            }
+//            for(Integer i=0; i<data.length; i++){
+//                Log.d("mylog", i.toString());
+//                Log.d("mylog", data[i].get("trackName").toString());
+//                Log.d("mylog", data[i].get("trackTime").toString());
+//            }
+
+            ListView lv = (ListView) findViewById(R.id.lvRecentTracks);
+            RecentTracksListAdapter adapter = new RecentTracksListAdapter(UserProfileActivity.this, data);
+
+            lv.setAdapter(adapter);
+
 
         }
 

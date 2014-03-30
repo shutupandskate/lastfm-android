@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="48dp">
+    <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:id="@+id/lvRecentTracksImage"
+            android:src="@drawable/ic_launcher"
+            android:layout_alignParentLeft="true"
+            />
+    <TextView android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:id="@+id/lvRecentTracksName"
+              android:text="Before I Forget"
+              android:layout_alignParentTop="true"
+              android:layout_toRightOf="@+id/lvRecentTracksImage"
+              android:textSize="16dp"
+              android:textColor="@color/trackNameColor"
+              android:layout_marginLeft="8dp"
+              android:layout_marginTop="8dp"
+              />
+    <TextView android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:id="@+id/lvRecentTracksArtist"
+              android:text="Slipknot"
+              android:layout_alignBottom="@+id/lvRecentTracksImage"
+              android:layout_toRightOf="@+id/lvRecentTracksImage"
+              android:textColor="@color/trackNameColor"
+              android:textSize="14dp"
+              android:layout_marginLeft="8dp"
+              android:layout_marginBottom="8dp"
+              />
+    <TextView android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:id="@+id/lvRecentTracksTime"
+              android:text="14:34"
+              android:layout_alignParentTop="true"
+              android:layout_alignParentEnd="true"
+              android:layout_marginRight="8dp"
+              android:layout_marginTop="8dp"
+              android:textColor="@color/trackTimeColor"
+              />
+</RelativeLayout>

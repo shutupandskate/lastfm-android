@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="trackNameColor">#333</color>
+    <color name="trackTimeColor">#333</color>
+    <color name="trackArtistColor">#666</color>
+    <color name="trackListDividerColor">#e1e1e1</color>
+    <color name="white">#fff</color>
+</resources>
