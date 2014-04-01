@@ -29,7 +29,7 @@ public class UserProfileActivity extends Activity {
 
     private final static String USER    = "ShutUpAndSkate";
     private final static String FORMAT  = "json";
-    private final static Integer LIMIT  = 3;
+    private final static Integer LIMIT  = 50;
     private final static String API_KEY = "4ee413fa8853b3c7d4d06fa6d9809e45";
 
     GetRecentTracksTask task;
@@ -107,12 +107,6 @@ public class UserProfileActivity extends Activity {
         @Override
         protected void onPostExecute(Map[] data) {
             super.onPostExecute(data);
-
-//            for(Integer i=0; i<data.length; i++){
-//                Log.d("mylog", i.toString());
-//                Log.d("mylog", data[i].get("trackName").toString());
-//                Log.d("mylog", data[i].get("trackTime").toString());
-//            }
 
             ListView lv = (ListView) findViewById(R.id.lvRecentTracks);
             RecentTracksListAdapter adapter = new RecentTracksListAdapter(UserProfileActivity.this, data);

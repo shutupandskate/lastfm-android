@@ -5,23 +5,27 @@
               android:layout_width="match_parent"
               android:layout_height="48dp">
     <ImageView
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:id="@+id/lvRecentTracksImage"
-            android:src="@drawable/ic_launcher"
-            android:layout_alignParentLeft="true"
-            />
-    <TextView android:layout_width="wrap_content"
+              android:layout_width="48dp"
+              android:layout_height="48dp"
+              android:id="@+id/lvRecentTracksImage"
+              android:src="@drawable/ic_launcher"
+              android:layout_alignParentLeft="true"
+              />
+    <TextView android:layout_width="fill_parent"
               android:layout_height="wrap_content"
               android:id="@+id/lvRecentTracksName"
-              android:text="Before I Forget"
-              android:layout_alignParentTop="true"
+              android:text="Before I Forget Forget Forget Forget Forget Forget Forget Forget"
+              android:layout_alignParentTop="false"
               android:layout_toRightOf="@+id/lvRecentTracksImage"
               android:textSize="16dp"
               android:textColor="@color/trackNameColor"
               android:layout_marginLeft="8dp"
-              android:layout_marginTop="8dp"
-              />
+              android:layout_marginTop="6dp"
+              android:scrollHorizontally="true"
+              android:ellipsize="end"
+              android:maxLines="1"
+              android:layout_toLeftOf="@+id/lvRecentTracksTime"
+              android:layout_alignParentEnd="false" android:layout_alignParentStart="false"/>
     <TextView android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:id="@+id/lvRecentTracksArtist"
@@ -32,6 +36,7 @@
               android:textSize="14dp"
               android:layout_marginLeft="8dp"
               android:layout_marginBottom="8dp"
+              android:layout_alignEnd="@+id/lvRecentTracksName"
               />
     <TextView android:layout_width="wrap_content"
               android:layout_height="wrap_content"

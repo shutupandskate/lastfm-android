@@ -1,18 +1,24 @@
 package com.example.Lastfm.lists;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 import com.example.Lastfm.R;
+import com.example.Lastfm.helpers.ImageLoaderTask;
+
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by ShutUpAndSkate on 30.03.14.
  */
-public class RecentTracksListAdapter extends BaseAdapter{
+public class RecentTracksListAdapter extends BaseAdapter {
     Context context;
     LayoutInflater Inflater;
     Map[] data;
@@ -44,6 +50,20 @@ public class RecentTracksListAdapter extends BaseAdapter{
 
         ((TextView) convertView.findViewById(R.id.lvRecentTracksName))
                 .setText(data[position].get("trackName").toString());
+        ((TextView) convertView.findViewById(R.id.lvRecentTracksArtist))
+                .setText(data[position].get("trackArtistName").toString());
+        ((TextView) convertView.findViewById(R.id.lvRecentTracksTime))
+                .setText(data[position].get("trackTime").toString());
+
+        String imageUrl = data[position].get("albumImageUrl").toString();
+        try {
+            Bitmap bm = (new ImageLoaderTask(imageUrl)).execute().get();
+            ((ImageView) convertView.findViewById(R.id.lvRecentTracksImage)).setImageBitmap(bm);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
 
         return convertView;
     }
