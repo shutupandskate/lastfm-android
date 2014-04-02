@@ -48,7 +48,6 @@ public class ImageLoaderTask extends AsyncTask<String, Void, Bitmap> {
 
     @Override
     protected Bitmap doInBackground(String... params) {
-        Log.d("mylog", "from background " + url);
         Bitmap imageBitmap = getBitmapFromUrl(url);
         return imageBitmap;
     }

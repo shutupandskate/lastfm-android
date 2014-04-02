@@ -1,7 +1,9 @@
 package com.example.Lastfm.lists;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,15 +58,20 @@ public class RecentTracksListAdapter extends BaseAdapter {
                 .setText(data[position].get("trackTime").toString());
 
         String imageUrl = data[position].get("albumImageUrl").toString();
-        try {
-            Bitmap bm = (new ImageLoaderTask(imageUrl)).execute().get();
-            ((ImageView) convertView.findViewById(R.id.lvRecentTracksImage)).setImageBitmap(bm);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
 
+        ImageView image = ((ImageView) convertView.findViewById(R.id.lvRecentTracksImage));
+        if(imageUrl.isEmpty()) {
+            image.setImageResource(R.drawable.ic_default_album);
+        } else {
+            try {
+                Bitmap bm = (new ImageLoaderTask(imageUrl)).execute().get();
+                image.setImageBitmap(bm);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+        }
         return convertView;
     }
 }
