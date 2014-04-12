@@ -8,7 +8,9 @@ import android.widget.AbsListView;
 import android.widget.ListView;
 import com.example.Lastfm.R;
 import com.example.Lastfm.activities.UserProfileActivity;
+import com.example.Lastfm.activities.UserRecentTracksListActivity;
 import com.example.Lastfm.helpers.CalendarHelper;
+import com.example.Lastfm.helpers.QueryURLHelper;
 import com.example.Lastfm.lists.RecentTracksListAdapter;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -21,6 +23,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -29,17 +32,14 @@ import java.util.Map;
 public class GetRecentTracksTask extends AsyncTask<Map[], Void, Map[]> {
 
     private static String USER;
-    private static String FORMAT;
-    private static Integer LIMIT;
-    private final static String API_KEY = "4ee413fa8853b3c7d4d06fa6d9809e45";
+    private static Integer LIMIT, PAGE;
     private Activity activity;
+    private URL url;
 
-    public static Boolean loadingFlag = false;
-
-    public GetRecentTracksTask(String user, String format, Integer lim, Activity activity) {
+    public GetRecentTracksTask(String user, Integer lim, Integer page, Activity activity) {
         this.USER = user;
-        this.FORMAT = format;
         this.LIMIT = lim;
+        this.PAGE = page;
         this.activity = activity;
     }
 
@@ -49,20 +49,21 @@ public class GetRecentTracksTask extends AsyncTask<Map[], Void, Map[]> {
         StringBuilder sb = new StringBuilder();
 
         try {
-            URL url = new URL("http://ws.audioscrobbler.com/2.0/?" +
-                    "method=user.getrecenttracks" +
-                    "&user="+ USER + "&api_key=" + API_KEY +
-                    "&format=" + FORMAT + "&limit=" + LIMIT);
+            Map<String, String> queryParams = new HashMap<String, String>();
+            queryParams.put("method", "getrecenttracks");
+            queryParams.put("user", USER);
+            queryParams.put("limit", LIMIT.toString());
+            queryParams.put("page", PAGE.toString());
 
-            connection = (HttpURLConnection)url.openConnection();
+            url = new QueryURLHelper(queryParams).getURLFromQuery();
+
+            connection = (HttpURLConnection) url.openConnection();
             BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             String line;
 
             while ( (line = br.readLine()) != null ) sb.append(line + "\n");
             br.close();
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         } finally {
             connection.disconnect();
@@ -93,14 +94,12 @@ public class GetRecentTracksTask extends AsyncTask<Map[], Void, Map[]> {
                 m.put("trackArtistName", (String) ((JSONObject) track.get("artist")).get("#text"));
                 m.put("albumImageUrl", (String) ((JSONObject)(((JSONArray) track.get("image")))
                         .get(1)).get("#text")); // "1" stands for img of medium size
-
                 recentTracks[i] = m;
             }
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
         return recentTracks;
     }
 
@@ -108,12 +107,12 @@ public class GetRecentTracksTask extends AsyncTask<Map[], Void, Map[]> {
     protected void onPostExecute(Map[] data) {
         super.onPostExecute(data);
 
-
         ListView lv = (ListView) activity.findViewById(R.id.lvRecentTracks);
         RecentTracksListAdapter adapter = new RecentTracksListAdapter(activity, data);
 
         lv.setAdapter(adapter);
 
+        UserRecentTracksListActivity.loadingFlag = false;
     }
 
 }

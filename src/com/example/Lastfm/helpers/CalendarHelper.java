@@ -30,7 +30,7 @@ public class CalendarHelper {
                 && c1.get(Calendar.DAY_OF_YEAR) == c2.get(Calendar.DAY_OF_YEAR);
 
         if(diffInMins <= 0) {
-            return "now";
+            return "Now";
         }
         if(diffInMins < 60 && diffInMins > 0) {
             return diffInMins.toString() + " min ago";

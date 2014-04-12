@@ -47,17 +47,22 @@ public class RecentTracksListAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        if(convertView == null )
-            convertView = Inflater.from(context).inflate(R.layout.recent_tracks_list_item, parent, false);
+        String imageUrl = "";
+        try {
+            if(convertView == null )
+                convertView = Inflater.from(context).inflate(R.layout.recent_tracks_list_item, parent, false);
 
-        ((TextView) convertView.findViewById(R.id.lvRecentTracksName))
-                .setText(data[position].get("trackName").toString());
-        ((TextView) convertView.findViewById(R.id.lvRecentTracksArtist))
-                .setText(data[position].get("trackArtistName").toString());
-        ((TextView) convertView.findViewById(R.id.lvRecentTracksTime))
-                .setText(data[position].get("trackTime").toString());
+            ((TextView) convertView.findViewById(R.id.lvRecentTracksName))
+                    .setText(data[position].get("trackName").toString());
+            ((TextView) convertView.findViewById(R.id.lvRecentTracksArtist))
+                    .setText(data[position].get("trackArtistName").toString());
+            ((TextView) convertView.findViewById(R.id.lvRecentTracksTime))
+                    .setText(data[position].get("trackTime").toString());
 
-        String imageUrl = data[position].get("albumImageUrl").toString();
+            imageUrl = data[position].get("albumImageUrl").toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         ImageView image = ((ImageView) convertView.findViewById(R.id.lvRecentTracksImage));
         if(imageUrl.isEmpty()) {
@@ -66,9 +71,7 @@ public class RecentTracksListAdapter extends BaseAdapter {
             try {
                 Bitmap bm = (new ImageLoaderTask(imageUrl)).execute().get();
                 image.setImageBitmap(bm);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }

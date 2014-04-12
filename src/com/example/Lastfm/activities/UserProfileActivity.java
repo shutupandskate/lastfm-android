@@ -34,17 +34,21 @@ public class UserProfileActivity extends Activity implements View.OnClickListene
 
 
     GetRecentTracksTask getRecentTracksTask;
-    Activity activity;
+    String userName;
+    Integer limit, page;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_profile);
 
-        getRecentTracksTask = new GetRecentTracksTask("ShutUpAndSkate", "json", 3, this);
+        this.userName = "ShutUpAndSkate";
+        this.limit = 3;
+        this.page = 1; // latest tracks
+
+        getRecentTracksTask = new GetRecentTracksTask(userName, limit, page, this);
         getRecentTracksTask.execute();
 
-        activity  = this;
 
         Button moreTracks = (Button) findViewById(R.id.butMoreTracks);
         moreTracks.setOnClickListener(this);
@@ -56,6 +60,8 @@ public class UserProfileActivity extends Activity implements View.OnClickListene
         switch(view.getId()) {
             case R.id.butMoreTracks:
                 intent = new Intent(this, UserRecentTracksListActivity.class);
+                intent.putExtra("userName", this.userName);
+                intent.putExtra("tracksPerLoading", this.limit);
                 startActivity(intent);
                 break;
             default:
