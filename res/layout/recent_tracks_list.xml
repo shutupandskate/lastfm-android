@@ -8,12 +8,6 @@
     <TextView android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:text="Recently Listened Tracks"/>
-
-    <Button   android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:id="@+id/butMoreTracks"
-              android:text="More tracks"/>
-
     <ListView android:id="@+id/lvRecentTracks"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"

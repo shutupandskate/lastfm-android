@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.AbsListView;
 import android.widget.ListView;
 import com.example.Lastfm.R;
 import com.example.Lastfm.activities.UserProfileActivity;
@@ -32,6 +33,8 @@ public class GetRecentTracksTask extends AsyncTask<Map[], Void, Map[]> {
     private static Integer LIMIT;
     private final static String API_KEY = "4ee413fa8853b3c7d4d06fa6d9809e45";
     private Activity activity;
+
+    public static Boolean loadingFlag = false;
 
     public GetRecentTracksTask(String user, String format, Integer lim, Activity activity) {
         this.USER = user;
@@ -97,6 +100,7 @@ public class GetRecentTracksTask extends AsyncTask<Map[], Void, Map[]> {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
         return recentTracks;
     }
 
@@ -109,6 +113,7 @@ public class GetRecentTracksTask extends AsyncTask<Map[], Void, Map[]> {
         RecentTracksListAdapter adapter = new RecentTracksListAdapter(activity, data);
 
         lv.setAdapter(adapter);
+
     }
 
 }
