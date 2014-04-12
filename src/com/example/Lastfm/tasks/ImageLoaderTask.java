@@ -1,4 +1,4 @@
-package com.example.Lastfm.helpers;
+package com.example.Lastfm.tasks;
 
 /**
  * Created by ShutUpAndSkate on 01.04.14.

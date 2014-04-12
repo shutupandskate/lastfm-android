@@ -12,7 +12,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.example.Lastfm.R;
-import com.example.Lastfm.helpers.ImageLoaderTask;
+import com.example.Lastfm.tasks.ImageLoaderTask;
 
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
