@@ -34,6 +34,7 @@ public class UserProfileActivity extends Activity implements View.OnClickListene
 
 
     GetRecentTracksTask getRecentTracksTask;
+    GetUserInfoTask getUserInfoTask;
     String userName;
     Integer limit, page;
 
@@ -49,6 +50,8 @@ public class UserProfileActivity extends Activity implements View.OnClickListene
         getRecentTracksTask = new GetRecentTracksTask(userName, limit, page, this);
         getRecentTracksTask.execute();
 
+//        getUserInfoTask = new GetUserInfoTask(userName);
+//        getUserInfoTask.execute();
 
         Button moreTracks = (Button) findViewById(R.id.butMoreTracks);
         moreTracks.setOnClickListener(this);

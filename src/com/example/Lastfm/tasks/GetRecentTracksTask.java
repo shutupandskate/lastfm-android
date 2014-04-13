@@ -99,6 +99,7 @@ public class GetRecentTracksTask extends AsyncTask<Map[], Void, Map[]> {
 
         } catch (JSONException e) {
             e.printStackTrace();
+            //return null;
         }
         return recentTracks;
     }
