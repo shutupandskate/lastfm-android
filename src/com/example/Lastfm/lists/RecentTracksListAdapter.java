@@ -47,7 +47,7 @@ public class RecentTracksListAdapter extends BaseAdapter {
         String imageUrl = "";
         RecentTracksViewHolder holder;
         try {
-            if(convertView == null ) {
+            if(convertView == null) {
                 convertView = Inflater.from(context).inflate(R.layout.recent_tracks_list_item, parent, false);
                 holder = new RecentTracksViewHolder();
                 holder.trackName = ((TextView) convertView.findViewById(R.id.lvRecentTracksName));

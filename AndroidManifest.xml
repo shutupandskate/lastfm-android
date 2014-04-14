@@ -13,8 +13,14 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".activities.UserRecentTracksListActivity"
-                  android:label="@string/app_name">
+        <activity android:name=".activities.UserRecentTracksListActivity">
         </activity>
+        <service android:name=".services.RecentTracksService">
+        </service>
+        <provider android:name=".provider.Provider"
+                  android:authorities="com.example.Lastfm.provider.Provider">
+        </provider>
     </application>
+
+
 </manifest>
