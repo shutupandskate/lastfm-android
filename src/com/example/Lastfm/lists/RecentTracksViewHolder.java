@@ -1,4 +1,4 @@
-package com.example.Lastfm.helpers;
+package com.example.Lastfm.lists;
 
 import android.widget.ImageView;
 import android.widget.TextView;

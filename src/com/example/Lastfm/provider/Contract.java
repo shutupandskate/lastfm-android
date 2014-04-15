@@ -1,15 +1,11 @@
 package com.example.Lastfm.provider;
 
-import android.net.Uri;
-
 /**
  * Created by ShutUpAndSkate on 13.04.14.
  */
 public class Contract {
     public static final String AUTHORITY = "com.example.Lastfm.provider.Provider";
     public static final String AUTHORITY_URI = "content://" + AUTHORITY;
-
-
 
     public static class UserTable {
         public static final String TABLE_NAME = "users";
@@ -27,7 +23,6 @@ public class Contract {
         public static final String TRACK_TIME = "trackTime";
         public static final String TRACK_ARTIST = "trackArtistName";
         public static final String TRACK_IMG_URL = "albumImageUrl";
-
     }
 
 }

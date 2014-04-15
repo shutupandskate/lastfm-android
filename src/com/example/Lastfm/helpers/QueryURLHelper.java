@@ -13,6 +13,7 @@ public class QueryURLHelper {
 
     URL url;
     private static final String API_KEY = "4ee413fa8853b3c7d4d06fa6d9809e45";
+    //private static final String API_KEY = "4ee413fa8853b3c7d4d45"; // lame key
     private static final String FORMAT = "json";
 
     public QueryURLHelper(Map<String, String> map) throws MalformedURLException {

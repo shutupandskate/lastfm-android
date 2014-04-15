@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.util.Log;
 import com.example.Lastfm.helpers.CalendarHelper;
+import com.example.Lastfm.helpers.JSONHelper;
 import com.example.Lastfm.helpers.QueryURLHelper;
 import com.example.Lastfm.provider.Contract;
 import com.example.Lastfm.provider.Provider;
@@ -24,6 +25,8 @@ import java.util.Map;
 
 import static android.provider.SyncStateContract.Helpers.get;
 import static android.provider.SyncStateContract.Helpers.insert;
+import static com.example.Lastfm.helpers.JSONHelper.*;
+import static java.lang.Integer.*;
 import static java.security.AccessController.getContext;
 
 /**
@@ -61,23 +64,55 @@ public class RecentTracksService extends IntentService {
             br.close();
         } catch (Exception e) {
             e.printStackTrace();
+            Log.e("log", "No connection");
+            // здесь надо как-то отделить ошибки про отсутствие соединения и неотвечающий сервер
+            return;
         } finally {
             connection.disconnect();
         }
 
         JSONObject jsonData, track;
         JSONArray tracks;
+
         ContentValues[] recentTracks = new ContentValues[limit];
 
         Provider pr = new Provider();
 
         try {
             jsonData = new JSONObject(sb.toString());
-            tracks = (JSONArray) ((JSONObject) jsonData.get("recenttracks")).get("track");
+
+            if(checkForServerErrors(jsonData)!=null) return;
+
+            // get total
+            String total;
+
+            if(((JSONObject) jsonData.get("recenttracks")).has("total")) {
+                total = ((JSONObject) jsonData.get("recenttracks")).get("total").toString();
+            } else if ( ((JSONObject) jsonData.get("recenttracks")).has("@attr") &&
+                    ((JSONObject)((JSONObject) jsonData.get("recenttracks")).get("@attr")).has("total")) {
+                total = ((JSONObject)((JSONObject) jsonData.get("recenttracks")).get("@attr")).get("total").toString();
+            } else {
+                total = null;
+            }
+
+
+            if(parseInt(total) <= 0) {
+                // show that user has no tracks
+                Log.d("log", "no tracks found");
+                return;
+            } else if ((parseInt(total) > 0)&&(parseInt(total) < limit)){
+                limit = parseInt(total);
+            }
 
             for(Integer i=0; i<limit; i++) {
                 ContentValues m = new ContentValues();
-                track = (JSONObject) tracks.get(i);
+
+                if(parseInt(total) > 1 ) {
+                    tracks = (JSONArray) ((JSONObject) jsonData.get("recenttracks")).get("track");
+                    track = (JSONObject) tracks.get(i);
+                } else {
+                    track = (JSONObject) ((JSONObject) jsonData.get("recenttracks")).get("track");
+                }
 
                 if(track.has("date")) {
                     String uts = (String) ((JSONObject) track.get("date")).get("uts");
@@ -96,16 +131,14 @@ public class RecentTracksService extends IntentService {
 
                 recentTracks[i] = m;
 
-                pr.insert(Uri.parse("content://com.example.Lastfm.provider.Provider/tracks"), m);
+                Log.d("log", m.toString());
 
+                pr.insert(Uri.parse("content://com.example.Lastfm.provider.Provider/tracks"), m);
             }
 
         } catch (JSONException e) {
             e.printStackTrace();
-            //return null;
         }
-
-
 
         Cursor c = getContentResolver().query(
                 Uri.parse("content://com.example.Lastfm.provider.Provider/tracks"),
@@ -117,7 +150,9 @@ public class RecentTracksService extends IntentService {
                 null
         );
 
-        Log.d("cursor", "cursor " + c);
+        // it works:
+        c.moveToFirst();
+        Log.d("log" , c.getString(0));
 
     }
 }

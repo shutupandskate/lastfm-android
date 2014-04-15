@@ -9,7 +9,6 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.example.Lastfm.R;
-import com.example.Lastfm.helpers.RecentTracksViewHolder;
 import com.example.Lastfm.tasks.ImageLoaderTask;
 
 import java.util.Map;

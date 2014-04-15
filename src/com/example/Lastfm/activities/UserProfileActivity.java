@@ -35,7 +35,6 @@ public class UserProfileActivity extends Activity implements View.OnClickListene
      * Called when the activity is first created.
      */
 
-
     GetRecentTracksTask getRecentTracksTask;
     GetUserInfoTask getUserInfoTask;
     String userName;
@@ -57,9 +56,8 @@ public class UserProfileActivity extends Activity implements View.OnClickListene
                 .putExtra("page", page)
         );
 
-
-        //getRecentTracksTask = new GetRecentTracksTask(userName, limit, page, this);
-        //getRecentTracksTask.execute();
+//        getRecentTracksTask = new GetRecentTracksTask(userName, limit, page, this);
+//        getRecentTracksTask.execute();
 
 //        getUserInfoTask = new GetUserInfoTask(userName);
 //        getUserInfoTask.execute();

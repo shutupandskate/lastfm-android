@@ -1,4 +1,4 @@
-package com.example.Lastfm.dbHelpers;
+package com.example.Lastfm.provider;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
