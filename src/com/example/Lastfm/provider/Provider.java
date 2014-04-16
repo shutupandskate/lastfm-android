@@ -16,7 +16,7 @@ public class Provider extends ContentProvider {
 
     static UserTracksDbHelper userTracksDbHelper;
     static SQLiteDatabase db;
-    static Context context;
+    //static Context context;
 
     static final int USERS = 1;
     static final int TRACKS = 2;
@@ -28,7 +28,7 @@ public class Provider extends ContentProvider {
         uriMatcher.addURI(AUTHORITY, UserTable.TABLE_NAME, USERS);
         uriMatcher.addURI(AUTHORITY, TrackTable.TABLE_NAME, TRACKS);
 
-        context = getContext();
+        //context = getContext();
 
         return true; // what is it for?
     }
@@ -70,7 +70,7 @@ public class Provider extends ContentProvider {
                 userTracksDbHelper.getWritableDatabase().insert(TrackTable.TABLE_NAME,
                         null, values);
 
-                context.getContentResolver().notifyChange(uri.parse(Contract.AUTHORITY_URI), null);
+                //context.getContentResolver().notifyChange(uri.parse(Contract.AUTHORITY_URI), null);
             default:
                 return null;
         }

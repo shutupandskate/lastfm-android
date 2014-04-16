@@ -42,6 +42,9 @@ public class RecentTracksService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         String userName = intent.getStringExtra("userName");
         Integer limit = intent.getIntExtra("limit", 50); // default number is 50
+
+        Log.d("log", limit.toString());
+
         Integer page = intent.getIntExtra("page", 1);
 
         HttpURLConnection connection = null;
@@ -104,6 +107,8 @@ public class RecentTracksService extends IntentService {
                 limit = parseInt(total);
             }
 
+            Log.d("log", limit.toString());
+
             for(Integer i=0; i<limit; i++) {
                 ContentValues m = new ContentValues();
 
@@ -140,19 +145,23 @@ public class RecentTracksService extends IntentService {
             e.printStackTrace();
         }
 
-        Cursor c = getContentResolver().query(
-                Uri.parse("content://com.example.Lastfm.provider.Provider/tracks"),
-                new String[] {
-                        Contract.TrackTable.TRACK_TIME
-                },
-                null,
-                null,
-                null
-        );
-
-        // it works:
-        c.moveToFirst();
-        Log.d("log" , c.getString(0));
+//        Cursor c = getContentResolver().query(
+//                Uri.parse("content://com.example.Lastfm.provider.Provider/tracks"),
+//                new String[] {
+//                        Contract.TrackTable.TRACK_TIME,
+//                        Contract.TrackTable.TRACK_IMG_URL,
+//                        Contract.TrackTable.TRACK_ARTIST,
+//                        Contract.TrackTable.TRACK_NAME,
+//                },
+//                null,
+//                null,
+//                null
+//        );
+//
+//        // it works:
+//        c.moveToFirst();
+//        Log.d("log" , c.getString(1));
+//        c.close();
 
     }
 }

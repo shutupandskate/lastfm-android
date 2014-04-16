@@ -1,7 +1,10 @@
 package com.example.Lastfm.activities;
 
 import android.app.Activity;
+import android.app.LoaderManager;
 import android.content.Intent;
+import android.content.Loader;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.AbsListView;
@@ -13,7 +16,7 @@ import com.example.Lastfm.tasks.GetRecentTracksTask;
 /**
  * Created by ShutUpAndSkate on 12.04.14.
  */
-public class UserRecentTracksListActivity extends Activity {
+public class UserRecentTracksListActivity extends Activity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     Activity activity;
     GetRecentTracksTask getRecentTracksTask;
@@ -60,5 +63,20 @@ public class UserRecentTracksListActivity extends Activity {
                 }
             }
         });
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        return null;
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+
     }
 }
