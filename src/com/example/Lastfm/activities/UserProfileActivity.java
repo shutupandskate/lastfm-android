@@ -41,7 +41,7 @@ public class UserProfileActivity extends Activity implements View.OnClickListene
      * Called when the activity is first created.
      */
 
-    //GetRecentTracksTask getRecentTracksTask;
+    GetRecentTracksTask getRecentTracksTask;
     //GetUserInfoTask getUserInfoTask;
 
     String userName;
@@ -59,24 +59,26 @@ public class UserProfileActivity extends Activity implements View.OnClickListene
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_profile);
 
-        this.userName = "ShutUpAndSkate";
+        this.userName = "mortidovs";
         this.limit = 3;
         this.page = 1; // latest tracks
 
-        Intent getRecentTracksIntent = new Intent(this, RecentTracksService.class);
+        /*Intent getRecentTracksIntent = new Intent(this, RecentTracksService.class);
         startService(getRecentTracksIntent
                 .putExtra("userName", userName)
                 .putExtra("limit", limit)
                 .putExtra("page", page)
-        );
+        );*/
 
 
 
-
+/*
         String[] dataColumns = {"trackTime", "trackName",
-                "trackArtistName"/*, "albumImageUrl"*/};
+                "trackArtistName"//, "albumImageUrl"
+                };
         int[] viewIDs = {R.id.lvRecentTracksTime, R.id.lvRecentTracksName,
-                R.id.lvRecentTracksArtist/*, R.id.lvRecentTracksImage*/};
+                R.id.lvRecentTracksArtist//, R.id.lvRecentTracksImage
+                };
 
         mAdapter = new SimpleCursorAdapter(this, R.layout.recent_tracks_list_item, null, dataColumns, viewIDs, 0);
 
@@ -87,16 +89,16 @@ public class UserProfileActivity extends Activity implements View.OnClickListene
         LoaderManager lm = getLoaderManager();
         lm.initLoader(LOADER_ID, null, mCallbacks);
 
+*/
 
-
-//        getRecentTracksTask = new GetRecentTracksTask(userName, limit, page, this);
-//        getRecentTracksTask.execute();
+        getRecentTracksTask = new GetRecentTracksTask(userName, limit, page, this);
+        getRecentTracksTask.execute();
 
 //        getUserInfoTask = new GetUserInfoTask(userName);
 //        getUserInfoTask.execute();
 
-//        Button moreTracks = (Button) findViewById(R.id.butMoreTracks);
-//        moreTracks.setOnClickListener(this);
+        Button moreTracks = (Button) findViewById(R.id.butMoreTracks);
+        moreTracks.setOnClickListener(this);
     }
 
     public void onClick(View view) {
@@ -104,10 +106,37 @@ public class UserProfileActivity extends Activity implements View.OnClickListene
 
         switch(view.getId()) {
             case R.id.butMoreTracks:
+//                Intent getRecentTracksIntent = new Intent(this, RecentTracksService.class);
+//                startService(getRecentTracksIntent
+//                        .putExtra("userName", userName)
+//                        .putExtra("limit", 10)
+//                        .putExtra("page", page)
+//                );
+//
+//                String[] dataColumns = {"trackTime", "trackName",
+//                        "trackArtistName"//, "albumImageUrl"
+//                };
+//                int[] viewIDs = {R.id.lvRecentTracksTime, R.id.lvRecentTracksName,
+//                        R.id.lvRecentTracksArtist//, R.id.lvRecentTracksImage
+//                };
+//
+//                mAdapter = new SimpleCursorAdapter(this, R.layout.recent_tracks_list_item, null, dataColumns, viewIDs, 0);
+//
+//                ListView lv = (ListView) findViewById(R.id.lvRecentTracks);
+//                lv.setAdapter(mAdapter);
+//
+//                mCallbacks = this;
+//                LoaderManager lm = getLoaderManager();
+//                lm.initLoader(LOADER_ID, null, mCallbacks);
+
+
+
                 intent = new Intent(this, UserRecentTracksListActivity.class);
                 intent.putExtra("userName", this.userName);
                 intent.putExtra("tracksPerLoading", this.limit);
-                //startActivity(intent);
+                startActivity(intent);
+
+
                 break;
             default:
                 break;

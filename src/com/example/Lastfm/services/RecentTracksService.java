@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.net.Uri;
 import android.util.Log;
 import com.example.Lastfm.helpers.CalendarHelper;
@@ -43,7 +44,7 @@ public class RecentTracksService extends IntentService {
         String userName = intent.getStringExtra("userName");
         Integer limit = intent.getIntExtra("limit", 50); // default number is 50
 
-        Log.d("log", limit.toString());
+        //Log.d("log", limit.toString());
 
         Integer page = intent.getIntExtra("page", 1);
 
@@ -107,7 +108,7 @@ public class RecentTracksService extends IntentService {
                 limit = parseInt(total);
             }
 
-            Log.d("log", limit.toString());
+            //Log.d("log", limit.toString());
 
             for(Integer i=0; i<limit; i++) {
                 ContentValues m = new ContentValues();
@@ -119,9 +120,11 @@ public class RecentTracksService extends IntentService {
                     track = (JSONObject) ((JSONObject) jsonData.get("recenttracks")).get("track");
                 }
 
+
+                //  CalendarHelper.prettifyTrackDate(Long.parseLong(uts)!!!!!!!!!
                 if(track.has("date")) {
                     String uts = (String) ((JSONObject) track.get("date")).get("uts");
-                    m.put("trackTime", CalendarHelper.prettifyTrackDate(Long.parseLong(uts)));
+                    m.put("trackTime", Long.parseLong(uts));
                 } else if(track.has("@attr") && ((JSONObject)track.get("@attr")).has("nowplaying")
                         && ((JSONObject)track.get("@attr")).get("nowplaying").toString().equals("true") ) {
                     m.put("trackTime", "Now");
@@ -136,32 +139,55 @@ public class RecentTracksService extends IntentService {
 
                 recentTracks[i] = m;
 
-                Log.d("log", m.toString());
+                Cursor c = getContentResolver().query(
+                    Uri.parse("content://com.example.Lastfm.provider.Provider/tracks"),
+                    new String[] {
+                            Contract.TrackTable.TRACK_TIME,
+                    },
+                    null,
+                    null,
+                    null
+                );
 
-                pr.insert(Uri.parse("content://com.example.Lastfm.provider.Provider/tracks"), m);
+                Log.d("log", DatabaseUtils.dumpCursorToString(c));
+
+                if(c.getCount() != 0){ // if there are some tracks already..
+                    //Log.d("log", "if");
+
+                    while(c.moveToNext()) {
+
+                        Log.d("log", "comparing track " + m.get("trackTime").toString());
+                        if( !(m.get("trackTime").equals("Now"))) {
+                            //Log.d("log1", m.get("trackTime").toString());
+                            //Log.d("log2", c.getString(c.getColumnIndex(Contract.TrackTable.TRACK_TIME)));
+
+                            if( (m.get("trackTime").toString().equals(c.getString(c.getColumnIndex(Contract.TrackTable.TRACK_TIME))))) {
+                                Log.d("log", "break");
+                                break; // leave "while" and write nothing to db
+                            } else {
+                                Log.d("log", "else. last?");
+                                if(c.isLast()) { // if it was last row in cursor
+                                    Log.d("log", "last");
+
+                                    pr.insert(Uri.parse("content://com.example.Lastfm.provider.Provider/tracks"), m);
+                                    break;
+                                } else {
+                                    continue; // go compare next row
+                                }
+                            }
+                        }
+
+                    }
+                } else { // if there were no tracks in db yet
+                    Log.d("log", "else!");
+                    pr.insert(Uri.parse("content://com.example.Lastfm.provider.Provider/tracks"), m);
+                }
+
             }
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-//        Cursor c = getContentResolver().query(
-//                Uri.parse("content://com.example.Lastfm.provider.Provider/tracks"),
-//                new String[] {
-//                        Contract.TrackTable.TRACK_TIME,
-//                        Contract.TrackTable.TRACK_IMG_URL,
-//                        Contract.TrackTable.TRACK_ARTIST,
-//                        Contract.TrackTable.TRACK_NAME,
-//                },
-//                null,
-//                null,
-//                null
-//        );
-//
-//        // it works:
-//        c.moveToFirst();
-//        Log.d("log" , c.getString(1));
-//        c.close();
 
     }
 }
