@@ -9,6 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.example.Lastfm.R;
+import com.example.Lastfm.helpers.ImageHelper;
 import com.example.Lastfm.tasks.ImageLoaderTask;
 
 import java.util.Map;
@@ -73,7 +74,8 @@ public class RecentTracksListAdapter extends BaseAdapter {
                 holder.image.setImageResource(R.drawable.ic_default_album);
             } else {
                 try {
-                    Bitmap bm = (new ImageLoaderTask(imageUrl)).execute().get();
+                    //Bitmap bm = (new ImageLoaderTask(imageUrl)).execute().get();
+                    Bitmap bm = ImageHelper.loadBitmap(imageUrl);
                     holder.image.setImageBitmap(bm);
                 } catch (Exception e) {
                     e.printStackTrace();

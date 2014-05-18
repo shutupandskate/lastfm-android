@@ -99,7 +99,6 @@ public class GetRecentTracksTask extends AsyncTask<Map[], Void, Map[]> {
 
         } catch (JSONException e) {
             e.printStackTrace();
-            //return null;
         }
         return recentTracks;
     }
@@ -113,7 +112,7 @@ public class GetRecentTracksTask extends AsyncTask<Map[], Void, Map[]> {
 
         lv.setAdapter(adapter);
 
-        UserRecentTracksListActivity.loadingFlag = false;
+        //UserRecentTracksListActivity.loadingFlag = false;
     }
 
 }

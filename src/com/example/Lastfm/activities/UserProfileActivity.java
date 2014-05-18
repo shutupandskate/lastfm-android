@@ -6,10 +6,12 @@ import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.LruCache;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.Button;
@@ -42,7 +44,6 @@ public class UserProfileActivity extends Activity implements View.OnClickListene
      */
 
     GetRecentTracksTask getRecentTracksTask;
-    //GetUserInfoTask getUserInfoTask;
 
     String userName;
     Integer limit, page;
@@ -51,8 +52,8 @@ public class UserProfileActivity extends Activity implements View.OnClickListene
     private static final int LOADER_ID = 1;
     private static final Uri CONTENT_URI = Uri.parse("content://com.example.Lastfm.provider.Provider/tracks");
 
-    private LoaderManager.LoaderCallbacks<Cursor> mCallbacks;
     private SimpleCursorAdapter mAdapter;
+    private static LruCache<String, Bitmap> cache;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -63,42 +64,17 @@ public class UserProfileActivity extends Activity implements View.OnClickListene
         this.limit = 3;
         this.page = 1; // latest tracks
 
-        /*Intent getRecentTracksIntent = new Intent(this, RecentTracksService.class);
-        startService(getRecentTracksIntent
-                .putExtra("userName", userName)
-                .putExtra("limit", limit)
-                .putExtra("page", page)
-        );*/
-
-
-
-/*
-        String[] dataColumns = {"trackTime", "trackName",
-                "trackArtistName"//, "albumImageUrl"
-                };
-        int[] viewIDs = {R.id.lvRecentTracksTime, R.id.lvRecentTracksName,
-                R.id.lvRecentTracksArtist//, R.id.lvRecentTracksImage
-                };
-
-        mAdapter = new SimpleCursorAdapter(this, R.layout.recent_tracks_list_item, null, dataColumns, viewIDs, 0);
-
-        ListView lv = (ListView) findViewById(R.id.lvRecentTracks);
-        lv.setAdapter(mAdapter);
-
-        mCallbacks = this;
-        LoaderManager lm = getLoaderManager();
-        lm.initLoader(LOADER_ID, null, mCallbacks);
-
-*/
-
         getRecentTracksTask = new GetRecentTracksTask(userName, limit, page, this);
         getRecentTracksTask.execute();
 
-//        getUserInfoTask = new GetUserInfoTask(userName);
-//        getUserInfoTask.execute();
-
         Button moreTracks = (Button) findViewById(R.id.butMoreTracks);
         moreTracks.setOnClickListener(this);
+
+        /* memory cache */
+        final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024); // all available memory. stored in Kb
+        final int cacheSize = maxMemory / 8;
+
+        cache = new LruCache<String, Bitmap>(cacheSize);
     }
 
     public void onClick(View view) {
@@ -106,47 +82,32 @@ public class UserProfileActivity extends Activity implements View.OnClickListene
 
         switch(view.getId()) {
             case R.id.butMoreTracks:
-//                Intent getRecentTracksIntent = new Intent(this, RecentTracksService.class);
-//                startService(getRecentTracksIntent
-//                        .putExtra("userName", userName)
-//                        .putExtra("limit", 10)
-//                        .putExtra("page", page)
-//                );
-//
-//                String[] dataColumns = {"trackTime", "trackName",
-//                        "trackArtistName"//, "albumImageUrl"
-//                };
-//                int[] viewIDs = {R.id.lvRecentTracksTime, R.id.lvRecentTracksName,
-//                        R.id.lvRecentTracksArtist//, R.id.lvRecentTracksImage
-//                };
-//
-//                mAdapter = new SimpleCursorAdapter(this, R.layout.recent_tracks_list_item, null, dataColumns, viewIDs, 0);
-//
-//                ListView lv = (ListView) findViewById(R.id.lvRecentTracks);
-//                lv.setAdapter(mAdapter);
-//
-//                mCallbacks = this;
-//                LoaderManager lm = getLoaderManager();
-//                lm.initLoader(LOADER_ID, null, mCallbacks);
-
-
-
                 intent = new Intent(this, UserRecentTracksListActivity.class);
                 intent.putExtra("userName", this.userName);
-                intent.putExtra("tracksPerLoading", this.limit);
                 startActivity(intent);
-
-
                 break;
             default:
                 break;
         }
     }
 
+    /* memory cache methods */
+
+    public static void addBitmapToMemoryCache(String key, Bitmap bitmap) {
+        if ((getBitmapFromMemCache(key) == null) && !(bitmap == null)) {
+            cache.put(key, bitmap);
+        }
+    }
+
+    public static Bitmap getBitmapFromMemCache(String key) {
+        return cache.get(key);
+    }
+
+    /* Loader methods */
+
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         CursorLoader cl = new CursorLoader(UserProfileActivity.this, CONTENT_URI, PROJECTION, null, null, null);
-        Log.d("log", cl.toString());
         return cl;
     }
 

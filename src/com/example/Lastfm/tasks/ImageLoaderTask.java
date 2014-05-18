@@ -16,6 +16,9 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import static com.example.Lastfm.activities.UserProfileActivity.addBitmapToMemoryCache;
+
+
 /**
  * Created by ShutUpAndSkate on 01.04.14.
  */
@@ -49,6 +52,8 @@ public class ImageLoaderTask extends AsyncTask<String, Void, Bitmap> {
     @Override
     protected Bitmap doInBackground(String... params) {
         Bitmap imageBitmap = getBitmapFromUrl(url);
+        addBitmapToMemoryCache(url, imageBitmap);
         return imageBitmap;
     }
 }
+

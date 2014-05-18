@@ -43,9 +43,6 @@ public class RecentTracksService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         String userName = intent.getStringExtra("userName");
         Integer limit = intent.getIntExtra("limit", 50); // default number is 50
-
-        //Log.d("log", limit.toString());
-
         Integer page = intent.getIntExtra("page", 1);
 
         HttpURLConnection connection = null;
@@ -149,25 +146,25 @@ public class RecentTracksService extends IntentService {
                     null
                 );
 
-                Log.d("log", DatabaseUtils.dumpCursorToString(c));
+                //Log.d("log", DatabaseUtils.dumpCursorToString(c));
 
                 if(c.getCount() != 0){ // if there are some tracks already..
                     //Log.d("log", "if");
 
                     while(c.moveToNext()) {
 
-                        Log.d("log", "comparing track " + m.get("trackTime").toString());
+                        //Log.d("log", "comparing track " + m.get("trackTime").toString());
                         if( !(m.get("trackTime").equals("Now"))) {
                             //Log.d("log1", m.get("trackTime").toString());
                             //Log.d("log2", c.getString(c.getColumnIndex(Contract.TrackTable.TRACK_TIME)));
 
                             if( (m.get("trackTime").toString().equals(c.getString(c.getColumnIndex(Contract.TrackTable.TRACK_TIME))))) {
-                                Log.d("log", "break");
+                                //Log.d("log", "break");
                                 break; // leave "while" and write nothing to db
                             } else {
-                                Log.d("log", "else. last?");
+                                //Log.d("log", "else. last?");
                                 if(c.isLast()) { // if it was last row in cursor
-                                    Log.d("log", "last");
+                                    //Log.d("log", "last");
 
                                     pr.insert(Uri.parse("content://com.example.Lastfm.provider.Provider/tracks"), m);
                                     break;
@@ -179,7 +176,7 @@ public class RecentTracksService extends IntentService {
 
                     }
                 } else { // if there were no tracks in db yet
-                    Log.d("log", "else!");
+                    //Log.d("log", "else!");
                     pr.insert(Uri.parse("content://com.example.Lastfm.provider.Provider/tracks"), m);
                 }
 
