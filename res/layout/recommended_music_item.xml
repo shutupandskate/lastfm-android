@@ -1,18 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
-    <TextView android:layout_width="wrap_content"
+              android:background="#262626"
+              android:layout_width="fill_parent"
+              android:layout_height="179dp">
+    <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="#000000"
+            android:id="@+id/recommendedMusic_logo"
+            android:src="@drawable/ic_launcher"
+            android:layout_alignParentLeft="true"
+            />
+    <TextView android:layout_width="fill_parent"
+              android:textStyle="bold"
               android:layout_height="wrap_content"
-            android:gravity="center_vertical"
             android:text="ArtistName"
-            android:id="@+id/recommendedMusic_artistname"/>
-    <TextView android:layout_width="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:background="#99000000"
+            android:id="@+id/recommendedMusic_artistname"
+            android:layout_above="@+id/recommendedMusic_same"
+            android:layout_alignParentLeft="true"/>
+    <TextView android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:gravity="center_vertical"
+              android:layout_marginLeft="8dp"
+              android:layout_alignParentBottom="true"
+              android:background="#99000000"
               android:text="The same as blalba"
               android:id="@+id/recommendedMusic_same"/>
 
-</LinearLayout>
+</RelativeLayout>

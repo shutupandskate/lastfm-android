@@ -2,17 +2,22 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
+              android:background="#262626"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
     <TextView android:layout_width="match_parent"
               android:layout_height="wrap_content"
+              android:textSize="22sp"
+              android:layout_marginLeft="8dp"
+              android:layout_marginTop="16dp"
               android:text="Recommended Music"/>
     <GridView android:id="@+id/lvRecommendedMusic"
+              android:layout_marginTop="16dp"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:divider="@color/trackListDividerColor"
               android:dividerHeight="1dp"
-              android:background="@color/white">
+              android:background="#262626">
     </GridView>
 
 </LinearLayout>

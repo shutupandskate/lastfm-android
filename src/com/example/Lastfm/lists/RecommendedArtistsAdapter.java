@@ -51,8 +51,7 @@ public class RecommendedArtistsAdapter extends BaseAdapter {
                 holder = new RecommendedArtistsViewHolder();
                 holder.artistName = ((TextView) convertView.findViewById(R.id.recommendedMusic_artistname));
                 holder.same = ((TextView) convertView.findViewById(R.id.recommendedMusic_same));
-
-           //     holder.image = ((ImageView) convertView.findViewById(R.id.lvRecentTracksImage));
+                holder.image = ((ImageView) convertView.findViewById(R.id.recommendedMusic_logo));
 
                 convertView.setTag(holder);
             } else {
@@ -63,10 +62,10 @@ public class RecommendedArtistsAdapter extends BaseAdapter {
                     .setText(data[position].get("artistName").toString());
             holder.same
                     .setText("Similar to " + data[position].get("same1").toString()
-                    + "and " + data[position].get("same2").toString());
+                    + " and " + data[position].get("same2").toString());
 
 
-         //   imageUrl = data[position].get("albumImageUrl").toString();
+            imageUrl = data[position].get("image").toString();
 
 
             if(imageUrl.isEmpty()) {
