@@ -26,13 +26,21 @@ public class QueryURLHelper {
 
         String query = "http://ws.audioscrobbler.com/2.0/?";
 
-        if(map.get("method").equals ("getrecenttracks")) {
+        Log.d("log", map.get("method"));
+
+        if(map.get("method").equals("getrecenttracks")) {
             query += "method=user.getrecenttracks";
             query += "&user="+ map.get("user");
             query += "&api_key=" + API_KEY;
             query += "&format=" + FORMAT;
             query += "&limit=" + map.get("limit");
             if(!map.get("page").isEmpty()) query += "&page=" + map.get("page");
+        } else if(map.get("method").equals("getInfo")) {
+            Log.d("log", "sdfsdf");
+            query += "method=user.getinfo";
+            query += "&user=" + map.get("user");
+            query += "&api_key=" + API_KEY;
+            query += "&format=" + FORMAT;
         }
 
         if(map.get("method").equals ("getrecommendedartists")) {

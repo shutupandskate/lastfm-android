@@ -22,6 +22,17 @@ public class UserTracksDbHelper extends SQLiteOpenHelper {
                     Contract.UserTable.USER_NAME + TEXT_TYPE +
                     " );";
 
+    private static final String SQL_CREATE_USER_INFO_TABLE =
+            "CREATE TABLE " + Contract.UserInfoTable.TABLE_NAME + " ( " +
+                    Contract.UserInfoTable.ID + " INT PRIMARY KEY, " +
+                    Contract.UserInfoTable.USER_ID + TEXT_TYPE + COMMA_SEP +
+                    Contract.UserInfoTable.USER_NAME + TEXT_TYPE + COMMA_SEP +
+                    Contract.UserInfoTable.REAL_NAME + TEXT_TYPE + COMMA_SEP +
+                    Contract.UserInfoTable.USER_PIC_URL + TEXT_TYPE + COMMA_SEP +
+                    Contract.UserInfoTable.PLAY_COUNT + TEXT_TYPE + COMMA_SEP +
+                    Contract.UserInfoTable.REG_TIME + TEXT_TYPE +
+                    " );";
+
     private static final String SQL_CREATE_TRACK_TABLE =
             "CREATE TABLE " + Contract.TrackTable.TABLE_NAME + " ( " +
                     Contract.TrackTable.ID + " INT PRIMARY KEY, " +
@@ -38,6 +49,9 @@ public class UserTracksDbHelper extends SQLiteOpenHelper {
     private static final String SQL_DELETE_TRACK_TABLE =
             "DROP TABLE IF EXISTS " + Contract.TrackTable.TABLE_NAME + ";";
 
+    private static final String SQL_DELETE_USER_INFO_TABLE =
+            "DROP TABLE IF EXISTS " + Contract.UserInfoTable.TABLE_NAME + ";";
+
     public UserTracksDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -47,12 +61,14 @@ public class UserTracksDbHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQL_CREATE_USER_TABLE);
         db.execSQL(SQL_CREATE_TRACK_TABLE);
+        db.execSQL(SQL_CREATE_USER_INFO_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL(SQL_DELETE_USER_TABLE);
         db.execSQL(SQL_DELETE_TRACK_TABLE);
+        db.execSQL(SQL_DELETE_USER_INFO_TABLE);
         onCreate(db);
     }
 }

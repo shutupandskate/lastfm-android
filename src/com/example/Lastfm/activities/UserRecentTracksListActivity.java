@@ -40,21 +40,16 @@ public class UserRecentTracksListActivity extends Activity implements LoaderMana
         setContentView(R.layout.recent_tracks_list);
 
         /* memory cache */
-//        final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024); // all available memory. stored in Kb
-//        final int cacheSize = maxMemory / 8;
-//
-//        mMemoryCache = new LruCache<String, Bitmap>(cacheSize) {
-//            @Override
-//            protected int sizeOf(String key, Bitmap value) {
-//                return value.getByteCount() / 1024;
-//            }
-//        };
+        final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024); // all available memory. stored in Kb
+        final int cacheSize = maxMemory / 8;
+
+        mMemoryCache = new LruCache<String, Bitmap>(cacheSize);
 
 
         /* intent service */
 
         userName = getIntent().getStringExtra("userName");
-        limit = 10;
+        limit = 40;
         page = 1;
 
         Intent getRecentTracksIntent = new Intent(this, RecentTracksService.class);
@@ -70,7 +65,7 @@ public class UserRecentTracksListActivity extends Activity implements LoaderMana
                 R.id.lvRecentTracksArtist, R.id.lvRecentTracksImage };
 
         mAdapter = new SimpleCursorAdapter(this, R.layout.recent_tracks_list_item, null, dataColumns, viewIDs, 0);
-        mAdapter.setViewBinder(new TracksViewBinder()); // overrides adapter view
+        mAdapter.setViewBinder(new TracksViewBinder()); // overrides adapter to place images there
 
         ListView lv = (ListView) findViewById(R.id.lvRecentTracks);
         lv.setAdapter(mAdapter);
@@ -81,19 +76,15 @@ public class UserRecentTracksListActivity extends Activity implements LoaderMana
     }
 
 
-//    public static void addBitmapToMemoryCache(String key, Bitmap bitmap) {
-//        if (getBitmapFromMemCache(key) == null) {
-//            Log.d("log", "add");
-//            mMemoryCache.put(key, bitmap);
-//        }
-//    }
-//
-//    public static Bitmap getBitmapFromMemCache(String key) {
-//        Log.d("key", key);
-//        Log.d("log", "ffffff ");
-//        Log.d("cache", mMemoryCache.toString());
-//        return mMemoryCache.get(key);
-//    }
+    public static void addBitmapToMemoryCache(String key, Bitmap bitmap) {
+        if (getBitmapFromMemCache(key) == null) {
+            mMemoryCache.put(key, bitmap);
+        }
+    }
+
+    public static Bitmap getBitmapFromMemCache(String key) {
+        return mMemoryCache.get(key);
+    }
 
 
     @Override
@@ -129,11 +120,15 @@ public class UserRecentTracksListActivity extends Activity implements LoaderMana
                 case R.id.lvRecentTracksImage:
                     String url = cursor.getString(columnIndex);
                     ImageView iv = (ImageView) view;
-                    try {
-                        Bitmap bm = (new ImageLoaderTask(url)).execute().get();
-                        iv.setImageBitmap(bm);
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                    if(url.isEmpty()) {
+                        iv.setImageResource(R.drawable.ic_default_album);
+                    } else {
+                        try {
+                            Bitmap bm = (new ImageLoaderTask(url)).execute().get();
+                            iv.setImageBitmap(bm);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
                     return true;
             }

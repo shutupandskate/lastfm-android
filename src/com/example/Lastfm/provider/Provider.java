@@ -4,6 +4,7 @@ import android.content.*;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.util.Log;
 
 import static com.example.Lastfm.provider.Contract.*;
 
@@ -20,7 +21,9 @@ public class Provider extends ContentProvider {
 
     static final int USERS = 1;
     static final int TRACKS = 2;
-    static final int ARTISTS = 3;
+
+    static final int USER_INFO = 3;
+
 
     @Override
     public boolean onCreate() {
@@ -28,6 +31,7 @@ public class Provider extends ContentProvider {
 
         uriMatcher.addURI(AUTHORITY, UserTable.TABLE_NAME, USERS);
         uriMatcher.addURI(AUTHORITY, TrackTable.TABLE_NAME, TRACKS);
+        uriMatcher.addURI(AUTHORITY, UserInfoTable.TABLE_NAME, USER_INFO);
 
         //context = getContext();
 
@@ -50,10 +54,20 @@ public class Provider extends ContentProvider {
                         selectionArgs,
                         null,
                         null,
+                        TrackTable.TRACK_TIME + " DESC"
+                );
+                return c;
+            case USER_INFO:
+                c = db.query(
+                        UserInfoTable.TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
                         sortOrder
                 );
                 return c;
-
             default:
                 return null;
         }
@@ -66,12 +80,17 @@ public class Provider extends ContentProvider {
 
     @Override
     public Uri insert(Uri uri, ContentValues values) {
+        Log.d("uri", String.valueOf(uri));
+        Log.d("switch", String.valueOf(uriMatcher.match(uri)));
         switch (uriMatcher.match(uri)) {
             case TRACKS:
                 userTracksDbHelper.getWritableDatabase().insert(TrackTable.TABLE_NAME,
                         null, values);
+            case USER_INFO:
+                Log.d("log", "insert");
+                userTracksDbHelper.getWritableDatabase().insert(UserInfoTable.TABLE_NAME,
+                        null, values);
 
-                //context.getContentResolver().notifyChange(uri.parse(Contract.AUTHORITY_URI), null);
             default:
                 return null;
         }
