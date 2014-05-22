@@ -57,6 +57,13 @@ public class QueryURLHelper {
 
         }
 
+        if (map.get("method").equals("user.getnewreleases")) {
+            query += "method=user.getnewreleases";
+            query += "&user="+ map.get("user");
+            query += "&api_key=" + API_KEY;
+            query += "&format=" + FORMAT;
+            query += "&limit=" + map.get("limit");
+        }
 
         url = new URL(query);
     }
