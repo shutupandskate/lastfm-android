@@ -52,7 +52,7 @@ public class ImageLoaderTask extends AsyncTask<String, Void, Bitmap> {
     @Override
     protected Bitmap doInBackground(String... params) {
         Bitmap imageBitmap = getBitmapFromUrl(url);
-        addBitmapToMemoryCache(url, imageBitmap);
+      //  addBitmapToMemoryCache(url, imageBitmap);
         return imageBitmap;
     }
 }

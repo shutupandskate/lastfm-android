@@ -3,11 +3,9 @@ package com.example.Lastfm.tasks;
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.widget.GridView;
-import android.widget.ListView;
 import com.example.Lastfm.R;
-import com.example.Lastfm.helpers.CalendarHelper;
 import com.example.Lastfm.helpers.QueryURLHelper;
-import com.example.Lastfm.lists.RecentTracksListAdapter;
+import com.example.Lastfm.lists.NewReleasesAdapter;
 import com.example.Lastfm.lists.RecommendedArtistsAdapter;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -21,19 +19,21 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by Lena on 21.05.14.
+ * Created by Lena on 22.05.14.
  */
-public class GetRecommendedArtistsTask extends AsyncTask<Map[], Void, Map[]>{
+public class GetNewReleasesTask  extends AsyncTask<Map[], Void, Map[]> {
 
     private static Integer LIMIT, PAGE;
     private Activity activity;
     private URL url;
+    private String username;
 
 
-    public GetRecommendedArtistsTask(Integer lim, Integer page, Activity activity) {
+    public GetNewReleasesTask(Integer lim, Integer page, String username, Activity activity) {
         this.LIMIT = lim;
         this.PAGE = page;
         this.activity = activity;
+        this.username = username;
     }
 
     @Override
@@ -43,9 +43,10 @@ public class GetRecommendedArtistsTask extends AsyncTask<Map[], Void, Map[]>{
 
         try {
             Map<String, String> queryParams = new HashMap<String, String>();
-            queryParams.put("method", "getrecommendedartists");
+            queryParams.put("method", "user.getnewreleases");
             queryParams.put("limit", LIMIT.toString());
             queryParams.put("page", PAGE.toString());
+            queryParams.put("user", username);
 
             url = new QueryURLHelper(queryParams).getURLFromQuery();
 
@@ -61,45 +62,41 @@ public class GetRecommendedArtistsTask extends AsyncTask<Map[], Void, Map[]>{
             connection.disconnect();
         }
 
-        JSONObject jsonData, artist;
-        JSONArray artistsJson;
-        Map[] artists = new Map[LIMIT];
+        JSONObject jsonData, album;
+        JSONArray albumsjson;
+        Map[] albums = new Map[LIMIT];
 
         try {
             jsonData = new JSONObject(sb.toString());
-            artistsJson = (JSONArray) ((JSONObject) jsonData.get("recommendations")).get("artist");
+            albumsjson = (JSONArray) ((JSONObject) jsonData.get("albums")).get("album");
 
             for(Integer i=0; i<LIMIT; i++) {
                 Map<String, String> m = new HashMap<String, String>();
-                artist = (JSONObject) artistsJson.get(i);
+                album = (JSONObject) albumsjson.get(i);
 
-                m.put("artistName", (String) artist.get("name"));
-                m.put("image", (String) ((JSONObject)(((JSONArray) artist.get("image")))
-                        .get(4)).get("#text"));
-                JSONArray similars =  (JSONArray)((JSONObject) artist.get("context")).get("artist");
-                artist = (JSONObject) similars.get(0);
-                m.put("same1", (String) artist.get("name"));
-                artist = (JSONObject) similars.get(1);
-                m.put("same2", (String) artist.get("name"));
+                m.put("album", (String) album.get("name"));
+                m.put("image", (String) ((JSONObject)(((JSONArray) album.get("image")))
+                        .get(3)).get("#text"));
 
+                JSONObject artist = (JSONObject) album.get("artist");
+                m.put("artist", (String) artist.get("name"));
 
-
-
-                artists[i] = m;
+                albums[i] = m;
             }
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return artists;
+        return albums;
     }
 
     @Override
     protected void onPostExecute(Map[] data) {
         super.onPostExecute(data);
-        GridView artists = (GridView) activity.findViewById(R.id.lvRecommendedMusic);
+        GridView artists = (GridView) activity.findViewById(R.id.lvLatestReleases);
 
-        RecommendedArtistsAdapter adapter = new RecommendedArtistsAdapter(activity, data);
+       NewReleasesAdapter adapter = new NewReleasesAdapter(activity, data);
+        artists.setAdapter(adapter);
         artists.setNumColumns(2);
         artists.setHorizontalSpacing(5);
         artists.setVerticalSpacing(5);
