@@ -15,6 +15,8 @@
         </activity>
         <activity android:name=".activities.UserRecentTracksListActivity">
         </activity>
+        <activity android:name=".activities.MainPageActivity">
+        </activity>
         <service android:name=".services.RecentTracksService">
         </service>
         <service android:name=".services.GetUserInfoService">

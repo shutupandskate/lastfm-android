@@ -21,6 +21,7 @@ public class Provider extends ContentProvider {
 
     static final int USERS = 1;
     static final int TRACKS = 2;
+
     static final int USER_INFO = 3;
 
 

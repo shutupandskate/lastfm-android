@@ -37,4 +37,14 @@ public class Contract {
         public static final String TRACK_IMG_URL = "albumImageUrl";
     }
 
+    public static abstract class ArtistsTable {
+        public static final String TABLE_NAME = "artists";
+        public static final String ID = "_id";
+
+        public static final String ARTIST_NAME = "artistName";
+        public static final String SAME_1 = "same1Name";
+        public static final String SAME_2 = "same2Name";
+        public static final String ARTIST_IMG_URL = "artistImageUrl";
+    }
+
 }
