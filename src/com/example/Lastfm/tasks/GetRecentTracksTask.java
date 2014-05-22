@@ -64,7 +64,8 @@ public class GetRecentTracksTask extends AsyncTask<Map[], Void, Map[]> {
             while ( (line = br.readLine()) != null ) sb.append(line + "\n");
             br.close();
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
+            return null;
         } finally {
             connection.disconnect();
         }
@@ -107,12 +108,13 @@ public class GetRecentTracksTask extends AsyncTask<Map[], Void, Map[]> {
     protected void onPostExecute(Map[] data) {
         super.onPostExecute(data);
 
-        ListView lv = (ListView) activity.findViewById(R.id.lvRecentTracks);
-        RecentTracksListAdapter adapter = new RecentTracksListAdapter(activity, data);
+        //Log.d("log", "kjgjhgjhg" + data);
+        if(data!=null){
+            ListView lv = (ListView) activity.findViewById(R.id.lvRecentTracks);
+            RecentTracksListAdapter adapter = new RecentTracksListAdapter(activity, data);
 
-        lv.setAdapter(adapter);
-
-        //UserRecentTracksListActivity.loadingFlag = false;
+            lv.setAdapter(adapter);
+        }
     }
 
 }

@@ -2,6 +2,7 @@ package com.example.Lastfm.lists;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -69,12 +70,10 @@ public class RecentTracksListAdapter extends BaseAdapter {
 
             imageUrl = data[position].get("albumImageUrl").toString();
 
-
             if(imageUrl.isEmpty()) {
                 holder.image.setImageResource(R.drawable.ic_default_album);
             } else {
                 try {
-                    //Bitmap bm = (new ImageLoaderTask(imageUrl)).execute().get();
                     Bitmap bm = ImageHelper.loadBitmap(imageUrl);
                     holder.image.setImageBitmap(bm);
                 } catch (Exception e) {

@@ -17,6 +17,8 @@
         </activity>
         <service android:name=".services.RecentTracksService">
         </service>
+        <service android:name=".services.GetUserInfoService">
+        </service>
         <provider android:name=".provider.Provider"
                   android:authorities="com.example.Lastfm.provider.Provider">
         </provider>
