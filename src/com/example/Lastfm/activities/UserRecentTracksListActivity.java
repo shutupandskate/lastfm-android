@@ -73,6 +73,7 @@ public class UserRecentTracksListActivity extends Activity implements LoaderMana
         mCallbacks = this;
         LoaderManager lm = getLoaderManager();
         lm.initLoader(LOADER_ID, null, mCallbacks);
+
     }
 
 

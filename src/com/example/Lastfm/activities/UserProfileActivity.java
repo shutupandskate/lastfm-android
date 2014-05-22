@@ -69,12 +69,14 @@ public class UserProfileActivity extends Activity implements View.OnClickListene
         final int cacheSize = maxMemory / 8;
         imageCache = new LruCache<String, Bitmap>(cacheSize);
 
-        this.userName = "mortidovs";
+        this.userName = "ShutUpAndSkate";
         this.limit = 3;
         this.page = 1; // latest tracks
 
         Button moreTracks = (Button) findViewById(R.id.butMoreTracks);
         moreTracks.setOnClickListener(this);
+        Button mainButton = (Button) findViewById(R.id.buttonToLena);
+        mainButton.setOnClickListener(this);
 
         getRecentTracksTask = new GetRecentTracksTask(userName, limit, page, this);
         AsyncTask<Map[],Void,Map[]> tr = getRecentTracksTask.execute();
@@ -116,6 +118,11 @@ public class UserProfileActivity extends Activity implements View.OnClickListene
         switch(view.getId()) {
             case R.id.butMoreTracks:
                 intent = new Intent(this, UserRecentTracksListActivity.class);
+                intent.putExtra("userName", this.userName);
+                startActivity(intent);
+                break;
+            case R.id.buttonToLena:
+                intent = new Intent(this, MainPageActivity.class);
                 intent.putExtra("userName", this.userName);
                 startActivity(intent);
                 break;

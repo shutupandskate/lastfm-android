@@ -51,6 +51,11 @@
               android:layout_height="wrap_content"
               android:divider="@color/trackListDividerColor"
               android:dividerHeight="1dp"
-              android:background="@color/white" android:layout_below="@+id/butMoreTracks">
+              android:background="@color/white" android:layout_below="@+id/butMoreTracks"
+              android:layout_above="@+id/buttonToLena">
     </ListView>
+
+    <Button android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:id="@+id/buttonToLena"
+            android:text="MAIN PAGE" android:layout_alignParentBottom="true" android:layout_centerHorizontal="true"/>
 </RelativeLayout>

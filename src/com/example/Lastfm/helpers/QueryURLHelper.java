@@ -18,7 +18,7 @@ public class QueryURLHelper {
   //  private static final String API_KEY = "4ee413fa8853b3c7d4d06fa6d9809e45";
     private static final String API_KEY = "145051ba210cb5029251cd638f906183";
     private static final String SECRET_KEY = "29cf0a931aeddcc4f2e42f5a6ad1c68b";
-    private static final String SESSION = "a992c1fe8450f07c3b53e513248ba023";
+    private static final String SESSION = "68ea4dfa45bdc5b6aaacee34f29f04a3";
 
     private static final String FORMAT = "json";
 

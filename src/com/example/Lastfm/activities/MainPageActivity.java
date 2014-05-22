@@ -34,7 +34,7 @@ public class MainPageActivity extends Activity  implements View.OnClickListener 
         cache = new LruCache<String, Bitmap>(cacheSize);
         getRecommendedArtistsTask = new GetRecommendedArtistsTask(4, 1, this);
         getRecommendedArtistsTask.execute();
-        getNewReleasesTask = new GetNewReleasesTask(2, 1, "Maerville", this);
+        getNewReleasesTask = new GetNewReleasesTask(2, 1, "ShutUpAndSkate", this);
         getNewReleasesTask.execute();
 
     }
