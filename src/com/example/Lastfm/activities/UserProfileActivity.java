@@ -147,32 +147,34 @@ public class UserProfileActivity extends Activity implements View.OnClickListene
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        data.moveToFirst();
-        String realName = data.getString(data.getColumnIndex("realName"));
+            data.moveToFirst();
+            if(data!=null) {
+                String realName = data.getString(data.getColumnIndex("realName"));
 
-        long regTime = Integer.valueOf(data.getString(data.getColumnIndex("regTime")));
-        Date date = new Date(regTime*1000L); // *1000 is to convert seconds to milliseconds
-        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
-        String formattedDate = sdf.format(date);
+                long regTime = Integer.valueOf(data.getString(data.getColumnIndex("regTime")));
+                Date date = new Date(regTime*1000L); // *1000 is to convert seconds to milliseconds
+                SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+                String formattedDate = sdf.format(date);
 
-        String playCount = data.getString(data.getColumnIndex("playCount"));
+                String playCount = data.getString(data.getColumnIndex("playCount"));
 
-        String countSince = playCount + " plays since " + formattedDate;
+                String countSince = playCount + " plays since " + formattedDate;
 
-        String userPicUrl = data.getString(data.getColumnIndex("userPicUrl"));
-        Bitmap userPicBitmap = ImageHelper.loadBitmap(userPicUrl);
+                String userPicUrl = data.getString(data.getColumnIndex("userPicUrl"));
+                Bitmap userPicBitmap = ImageHelper.loadBitmap(userPicUrl);
 
-        Bitmap circlePic = ImageHelper.getRoundedCornerBitmap(userPicBitmap, 50);
+                Bitmap circlePic = ImageHelper.getRoundedCornerBitmap(userPicBitmap, 50);
 
-        data.close();
+                data.close();
 
-        switch (loader.getId()) {
-            case LOADER_ID:
-                userInfoRealName.setText(realName);
-                userInfoPlaysSince.setText(countSince);
-                userInfoPic.setImageBitmap(circlePic);
-                break;
-        }
+                switch (loader.getId()) {
+                    case LOADER_ID:
+                        userInfoRealName.setText(realName);
+                        userInfoPlaysSince.setText(countSince);
+                        userInfoPic.setImageBitmap(circlePic);
+                        break;
+                }
+            }
     }
 
     @Override
